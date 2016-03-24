@@ -16,25 +16,27 @@ export default class TileBoard extends Component {
     constructor() {
         super()
         
+        this.state = {
+            current_word_length: 0,
+            current_word: ""
+        }
     }
-
-    handleTileClick(e) {
-        // Update currentword component string
-        console.log("Tile clicked, letter is: " + tile.letter)
-        
-        // Update tile linkedlist to track current words   
+    
+    handleTileClick(letter) {
+        this.setState({ current_word += letter })
     }
     
     render() {
         var items = this.props.tiles.map(function (tile) {
             return (
-                <Tile onClick={tile.handleTileClick} key={tile.position} tile={tile} />
+                <Tile key={tile.position} tile={tile} />
             )
         })
         
         return (
             <div className="tileBoard">
                 {items}
+                <CurrentWord currentword={this.state.current_word} currentLength={this.state.current_word_length} />
             </div>
         );
     }
@@ -42,18 +44,23 @@ export default class TileBoard extends Component {
 
 export default class Tile extends Component {
     
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         
         this.state = {
             isActive: false // no tiles selected at start
         }
+        
+        this.handleTileClick = this.handleTileClick.bind(this)
     }
     
-    handleTileClick() {
+    // Emit tile clicked and letter clicked
+    handleTileClick(e) {
         // Toggle between active and !active
         let active = !this.state.isActive
         this.setState({ isActive: active })
+        
+        console.log("Tile clicked, letter is: " + this.props.tile.letter)
         
         // Update CurrentWord
         // Update tile linkedlist to track current words
@@ -64,7 +71,7 @@ export default class Tile extends Component {
         
         return (
             <div className="tile" 
-                 onClick={this.props.onClick} >
+                 onClick={this.handleTileClick} >
                 {this.props.tile.letter}
             </div>
         )
@@ -73,19 +80,10 @@ export default class Tile extends Component {
 
 export default class CurrentWord extends Component {
     
-    constructor() {
-        super()
-        
-        this.state = {
-            current_word: ""
-        }
-    }
-    
-    
     render() {
         return (
             <div className="currentWord">
-                Current Word: {this.state.current_word}
+                Current Word: {this.props.currentword}
             </div>
         );
     }
@@ -138,13 +136,20 @@ export default class PastWordScore extends Component {
 
 export default class SubmitButton extends Component {
     
+    constructor(props) {
+        super(props)
+        
+        this.handleClick = this.handleClick.bind(this)
+        
+    }
+    
     handleClick() {
         
     }
     
     render() {
         return (
-            <input className="submit" type="submit" value="Submit Word"/>
+            <input className="submit" type="submit" value="Submit Word" onClick={this.handleClick}/>
         );
     }
 }
@@ -169,8 +174,10 @@ export default class Boggle extends Component {
         }
         
         this.state = {
-            tiles: random_dice
+            tiles: random_dice,
+            submitted: false
         }
+        
         
     }
     
@@ -182,9 +189,8 @@ export default class Boggle extends Component {
         return (
             <div>
                 <Header text=""/>
-                <TileBoard tiles={this.state.tiles}/>
-                <CurrentWord />
-                <SubmitButton submitHandler={this.submitHandler}/>
+                <TileBoard tiles={this.state.tiles} />
+                <SubmitButton submitHandler={this.state.submitted} />
                 <PastWordTable />                
             </div>
         );
