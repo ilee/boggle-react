@@ -1,6 +1,71 @@
 <html>
 <head>
-    <title>Sample App</title>
+  <title>Boggle!</title>
+  <style type="text/css">
+		.title { 
+			text-align: center; 
+			height: 80px; 
+			background-image: url("boggle-logo.png");
+			background-size: 50% 100%;
+			background-repeat: no-repeat;
+			background-position: center;	
+		}
+		#root { 
+			width: 489px; 
+			margin: 0 auto; 
+			background: #F57921;
+		}
+		.tileboard {
+			background: #398BD4;
+			width: 400px;
+			margin: 0 auto;
+			border: 5px solid #FFCA08;
+		}
+			.tileboard:after {
+				content: "";
+				display: table;
+				clear: both;
+			}
+			.tile {
+				background: #FFF;
+				border: 1px solid black;
+				margin: 4px;
+				display: inline-block;
+				width: 70px;
+				height: 70px;
+				text-align: center;
+				vertical-align: middle;
+				line-height: 70px;
+			}
+			
+		.currentWord {
+			display: inline;
+			margin: 5px;
+			line-height: 30px;
+		}
+		
+		.submit {
+			float: right;
+			margin-top: 5px;
+		}
+		
+		table, td, th {
+			border: 4px solid #FFCA08;
+			background-color: #FFF;
+		}
+		table {
+			border-collapse: collapse;
+		}
+		th {
+			text-align: left;
+		}
+		.lastrow {
+			background-color: #ACCEEC;
+		}
+		
+		
+		
+	</style>
 </head>
 <body>
     <div id='root'></div>
